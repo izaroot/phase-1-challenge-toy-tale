@@ -39,6 +39,24 @@ document.addEventListener("DOMContentLoaded", () => {
     newDiv.append(newH2, newImg, newP, newBtn)
 
     toyCollectionDiv.append(newDiv)
+
+    newBtn.addEventListener('click', function(evt){
+      fetch(`http://localhost:3000/toys/${toyPOJO.id}`, {
+        method: 'PATCH',
+        headers: {
+          "Content-type": "application/json",
+          Accept: "application/json"
+        },
+        body: JSON.stringify({
+          likes: toyPOJO.likes + 1
+        })
+      })
+      .then(resp => resp.json())
+      .then(updatedToyObj => {
+        newP.innerText = updatedToyObj.likes
+        toyPOJO.likes = updatedToyObj.likes
+      })
+    })
   }
 
   fetch("http://localhost:3000/toys")
@@ -74,5 +92,7 @@ document.addEventListener("DOMContentLoaded", () => {
       turnToyObjToHTML(newToy)
     })
   })
+
+
 
 });
